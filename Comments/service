@@ -1,0 +1,72 @@
+package com.example.News.Portal.Service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
+import com.example.News.Portal.Entity.Table3;
+import com.example.News.Portal.Entity.Table4;
+import com.example.News.Portal.Repo.newstable3repo;
+import com.example.News.Portal.Repo.newstable4repo;
+
+@Service
+public class Table3Commentservice {
+	@Autowired 
+	private newstable3repo commentRepo;
+    public List<Table4> getAllComments() 
+    { 
+    	return commentRepo.findAll(); 
+    	}
+    public Table4 addComment(Table4 comment) 
+    {
+    	return commentRepo.save(comment);
+    	}
+    public String deleteComment(Long id) 
+    { 
+    	if(commentRepo.existsById(id))
+    	{
+    	commentRepo.deleteById(id); 
+    	return "comment deleted";
+    	}
+    	else
+    	{
+    		return "value not found"+id;
+    	}
+    }
+    public Table4 updateComment(Long id,Table4 updatedComment) {
+    	if(commentRepo.existsById(id))
+    	{
+        Table4 commentobj= commentRepo.findById(id).get();
+            commentobj.setComment(updatedComment.getComment());
+            commentobj.setUsers(updatedComment.getUsers());
+            return commentRepo.save(commentobj);
+        }
+    	return updatedComment;
+    }
+    public Page<Table4> getCommentsPage(int page, int size) {
+        PageRequest obj = PageRequest.of(page, size);
+        return commentRepo.findAll(obj);
+    }
+
+    public List<Table4> getCommentsByCommentAndId(String comment, Long id) {
+        return commentRepo.findByCommentAndId(comment, id);
+    }
+
+    public List<Table4> getCommentsByCommentOrId(String comment, Long id)  {
+        return commentRepo.findByCommentOrId(comment, id);
+    }
+    public List<Table4> fetchCommentsByComment(List<String> comment) {
+        return commentRepo.findByCommentIn(comment);
+    }
+
+    public List<Table4> findCommentsByCommentStartingWith(String comment) {
+        return commentRepo.findByCommentStartingWith(comment);
+    }
+
+    public List<Table4> findCommentsByCommentContains(String comment) {
+        return commentRepo.findByCommentContains(comment);
+    }
+}
