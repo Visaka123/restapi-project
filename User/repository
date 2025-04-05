@@ -1,0 +1,22 @@
+package com.example.News.Portal.Repo;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.stereotype.Repository;
+
+import com.example.News.Portal.Entity.Table1;
+
+
+@Repository
+public interface newsportalRepo extends JpaRepository<Table1, Long>, PagingAndSortingRepository<Table1, Long> {
+	 List<Table1> findAll();
+    List<Table1> findByNameAndMobileno(String name, Long mobileno);
+    List<Table1> findByNameOrMobileno(String name, Long mobileno);
+    List<Table1> findByNameIn(List<String> name);
+    List<Table1> findByNameStartingWith(String name);
+    List<Table1> findByNameContains(String name);
+    List<Table1> findByNameEndingWith(String name);
+    List<Table1> findByNameNotContaining(String name);
+}
