@@ -1,0 +1,20 @@
+package com.example.News.Portal.Repo;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.stereotype.Repository;
+
+import com.example.News.Portal.Entity.Table6;
+@Repository
+
+
+public interface newstable6repo extends JpaRepository<Table6, Long>, PagingAndSortingRepository<Table6, Long> {
+	List<Table6> findAll();
+    List<Table6> findByAdminNameAndAdminId(String adminName, int adminId);
+    List<Table6> findByAdminNameOrAdminId(String adminName, int adminId);
+    List<Table6> findByAdminNameIn(List<String> adminName);
+    List<Table6> findByAdminNameStartingWith(String adminName);
+    List<Table6> findByAdminNameContains(String adminName);
+}
