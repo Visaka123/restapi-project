@@ -1,0 +1,71 @@
+package com.example.News.Portal.Controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.News.Portal.Entity.Table5;
+import com.example.News.Portal.Service.Table4LatestNewsservice;
+
+@RestController
+@RequestMapping("/latest-news")
+public class Table4LatestController {
+	@Autowired 
+	private 
+	Table4LatestNewsservice latestNewsService;
+    @GetMapping("/alllatestnews")
+    public List<Table5> getAllLatestNews() 
+    { 
+    	return latestNewsService.getAllLatestNews(); 
+    	}
+    @PostMapping("/addlatestnews")
+    public Table5 addLatestNews(@RequestBody Table5 latestNews) 
+    { 
+    	return latestNewsService.addLatestNews(latestNews);
+    	}
+    @DeleteMapping("/deletelatestnews/{id}")
+    public void deleteLatestNews(@PathVariable Long id)
+    { 
+    	latestNewsService.deleteLatestNews(id); }
+    @PutMapping("/updatelatestnews/{id}")
+    public Table5 updateLatestNews(@PathVariable Long id, @RequestBody Table5 latestNews) {
+        return latestNewsService.updateLatestNews(id, latestNews);
+    }
+    @GetMapping("/latestpagination")
+    public Page<Table5> getLatestPage(@RequestParam int page, @RequestParam int size) {
+        return latestNewsService.getLatestPage(page, size);
+    }
+
+    @GetMapping("/latestand")
+    public List<Table5> getLatestByAnd(@RequestParam String publishedDate, @RequestParam Long id) {
+        return latestNewsService.getLatestByPublishedDateAndNewsId(publishedDate, id);
+    }
+    @GetMapping("/latestor")
+    public List<Table5> getLatestByOr(@RequestParam String publishedDate, @RequestParam Long id) {
+        return latestNewsService.getLatestByPublishedDateOrNewsId(publishedDate, id);
+    }
+    @GetMapping("/latestIn")
+    public List<Table5> fetchLatestByOr(@RequestParam List<String> publishedDate) {
+        return latestNewsService.fetchLatestByPublishedDate(publishedDate);
+    }
+
+    @GetMapping("/lateststart")
+    public List<Table5> findLatestByStartingWith(@RequestParam String publishedDate) {
+        return latestNewsService.findLatestByPublishedDateStartingWith(publishedDate);
+    }
+
+    @GetMapping("/latestcontainsdata")
+    public List<Table5> findLatestByContains(@RequestParam String publishedDate) {
+        return latestNewsService.findLatestByPublishedDateContains(publishedDate);
+    }
+}
