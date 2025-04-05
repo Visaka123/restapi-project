@@ -1,0 +1,71 @@
+package com.example.News.Portal.Service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
+import com.example.News.Portal.Entity.Table5;
+import com.example.News.Portal.Repo.newstable4repo;
+
+@Service
+public class Table4LatestNewsservice {
+	@Autowired
+	private newstable4repo latestNewsRepo;
+    public List<Table5> getAllLatestNews()
+    { 
+    	return latestNewsRepo.findAll(); 
+    	}
+    public Table5 addLatestNews(Table5 latestNews)
+    { 
+    	return latestNewsRepo.save(latestNews); 
+    	}
+    public String deleteLatestNews(Long id) { 
+    	if(latestNewsRepo.existsById(id))
+    	{
+    	latestNewsRepo.deleteById(id);
+    	return "latestnews deleted";
+    	}
+    	else
+    		
+    	{
+    		return "value not value";
+    	}
+    }
+    public Table5 updateLatestNews(Long id, Table5 updatedLatestNews) {
+    	if(latestNewsRepo.existsById(id))
+    	{
+    		 Table5 latestobj=  latestNewsRepo.findById(id).get();
+    		 latestobj.setNewsId(updatedLatestNews.getNewsId());
+            latestobj.setPublishedDate(updatedLatestNews.getPublishedDate());
+            return latestNewsRepo.save(latestobj);
+    	}
+    	return  updatedLatestNews;
+    }
+    public Page<Table5> getLatestPage(int page, int size) {
+        PageRequest obj = PageRequest.of(page, size);
+        return latestNewsRepo.findAll(obj);
+    }
+
+    public List<Table5> getLatestByPublishedDateAndNewsId(String publishedDate, Long newsId) {
+        return latestNewsRepo.findByPublishedDateAndNewsId(publishedDate, newsId);
+    }
+
+    public List<Table5> getLatestByPublishedDateOrNewsId (String publishedDate, Long newsId){
+        return latestNewsRepo.findByPublishedDateOrNewsId(publishedDate, newsId);
+    }
+
+    public List<Table5> fetchLatestByPublishedDate(List<String>publishedDate ) {
+        return latestNewsRepo.findByPublishedDateIn(publishedDate);
+    }
+
+    public List<Table5> findLatestByPublishedDateStartingWith(String publishedDate) {
+        return latestNewsRepo.findByPublishedDateStartingWith(publishedDate);
+    }
+
+    public List<Table5> findLatestByPublishedDateContains(String publishedDate) {
+        return latestNewsRepo.findByPublishedDateContains(publishedDate);
+    }
+}
