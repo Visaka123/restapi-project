@@ -1,0 +1,19 @@
+package com.example.News.Portal.Repo;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.stereotype.Repository;
+
+import com.example.News.Portal.Entity.Table4;
+
+@Repository
+	  public interface newstable3repo extends JpaRepository<Table4, Long>, PagingAndSortingRepository<Table4, Long> {
+		  List<Table4> findAll();
+		    List<Table4> findByCommentAndId(String comment, Long id);
+		    List<Table4> findByCommentOrId(String comment, Long id);
+		    List<Table4> findByCommentIn(List<String> comment);
+		    List<Table4> findByCommentStartingWith(String comment);
+		    List<Table4> findByCommentContains(String comment);
+		}
+
