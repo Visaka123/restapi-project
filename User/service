@@ -1,0 +1,120 @@
+package com.example.News.Portal.Service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
+
+import com.example.News.Portal.Entity.Table1;
+import com.example.News.Portal.Repo.newsportalRepo;
+
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.persistence.Table;
+
+@Service
+public class Table1userservice {
+@Autowired private JavaMailSender sender;
+	    @Autowired 
+	    private newsportalRepo userRepo;
+	    public List<Table1> getAllUsers()
+	    { 
+	    	return userRepo.findAll(); 
+	    }
+	    
+	    public Table1 addUser(Table1 user)
+	    { 
+	    	return userRepo.save(user); 
+	    	}
+	    public String deleteUser(Long id) 
+	    {
+	    	if(userRepo.existsById(id)) {
+	    	userRepo.deleteById(id);
+	    	return "user deleted";
+	    	}
+	    	else
+	    	{
+	    		return "user not found"+id;
+	    	}
+	    }
+	    	
+	    public Table1 updateUser(Long id, Table1 updatedUser) 
+	    {
+	    	if(userRepo.existsById(id))
+	    	{
+	    		Table1 user =userRepo.findById(id).get();
+	    	
+	        
+	            user.setName(updatedUser.getName());
+	            user.setEmail(updatedUser.getEmail());
+	    	     user.setMobileno(updatedUser.getMobileno());
+	            return userRepo.save(user);
+	    	}
+	    	return updatedUser;
+	        }
+	    
+public Page<Table1> getUserPage(int page, int size) {
+    PageRequest obj = PageRequest.of(page, size);
+    return userRepo.findAll(obj);
+}
+
+public List<Table1> getUserByNameAndMobileno(String name, Long mobileno) {
+    return userRepo.findByNameAndMobileno(name,mobileno );
+}
+
+public List<Table1> getUserByNameOrMobileno(String name, Long mobileno) {
+    return userRepo.findByNameOrMobileno(name, mobileno);
+}
+
+public List<Table1> fetchUsersByNames(List<String> name) {
+    return userRepo.findByNameIn(name);
+}
+
+public List<Table1> findUserByNameStartingWith(String name) {
+    return userRepo.findByNameStartingWith(name);
+}
+
+public List<Table1> findUserByNameContains(String name) {
+    return userRepo.findByNameContains(name);
+}
+public List<Table1> findUserByNameEndingWith(String name) {
+    return userRepo.findByNameEndingWith(name);
+}
+public List<Table1> findUserByNameNotContaining(String name) {
+    return userRepo.findByNameNotContaining(name);
+}
+public String sendmail(Long id,String receiver, String subject, String Body) { 
+	try {
+
+
+MimeMessage message = sender.createMimeMessage();
+MimeMessageHelper helper = new MimeMessageHelper(message);
+helper.setTo(receiver);
+helper.setSubject(subject);
+helper.setText(Body); 
+sender.send(message);
+Table1 mail = new Table1();
+
+mail.setId(id);
+mail.setReceiver(receiver);
+mail.setSubject(subject);
+mail.setBody(Body);
+userRepo.save(mail);
+return "Email send Successfully"+receiver;
+	}
+	catch(MessagingException e)
+	{
+		return "Email Not Found";
+	}
+}
+public Table1 saveUserWithNews(Table1 user) {
+    return userRepo.save(user);
+}
+}
+	
+
+
