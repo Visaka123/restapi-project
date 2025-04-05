@@ -1,0 +1,72 @@
+package com.example.News.Portal.Controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.News.Portal.Entity.Table4;
+import com.example.News.Portal.Service.Table3Commentservice;
+@RestController
+@RequestMapping("/comments")
+public class Table3CommentController {
+	  @Autowired
+	  private Table3Commentservice commentService;
+	    @GetMapping("/allcomments")
+	    public List<Table4> getAllComments() 
+	    { 
+	    	return commentService.getAllComments(); 
+	    	}
+	    @PostMapping("/addcomments")
+	    public Table4  addComment(@RequestBody Table4 comment)
+	    { 
+	    	return commentService.addComment(comment); 
+	    	}
+	    @DeleteMapping("/deletecomments/{id}")
+	    public void deleteComment(@PathVariable Long id) 
+	    { 
+	    	commentService.deleteComment(id);
+	    	}
+	    @PutMapping("/updatecomments/{id}")
+	    public Table4 updateComment(@PathVariable Long id, @RequestBody Table4 comment) 
+	    {
+	        return commentService.updateComment(id, comment);
+	    }
+	    @GetMapping("/commentspagination")
+	    public Page<Table4> getCommentsPage(@RequestParam int page, @RequestParam int size) {
+	        return commentService.getCommentsPage(page, size);
+	    }
+
+	    @GetMapping("/commentsand")
+	    public List<Table4> getCommentsByAnd(@RequestParam String comment, @RequestParam Long id) {
+	        return commentService.getCommentsByCommentAndId(comment, id);
+	    }
+	    @GetMapping("/commentsor")
+	    public List<Table4> getCommentsByOr(@RequestParam String comment, @RequestParam Long id) {
+	        return commentService.getCommentsByCommentOrId(comment, id);
+	    }
+
+	    @GetMapping("/commentsIn")
+	    public List<Table4> fetchCommentsByOr(@RequestParam List<String> comment) {
+	        return commentService.fetchCommentsByComment(comment);
+	    }
+
+	    @GetMapping("/commentsstart")
+	    public List<Table4> findCommentsByStartingWith(@RequestParam String comment) {
+	        return commentService.findCommentsByCommentStartingWith(comment);
+	    }
+
+	    @GetMapping("/commentscontainsdata")
+	    public List<Table4> findCommentsByContains(@RequestParam String comment) {
+	        return commentService.findCommentsByCommentContains(comment);
+	    }
+}
