@@ -1,0 +1,74 @@
+package com.example.News.Portal.Service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
+import com.example.News.Portal.Entity.Table2;
+import com.example.News.Portal.Entity.Table3;
+import com.example.News.Portal.Repo.newstable2repo;
+import com.example.News.Portal.Repo.newstable3repo;
+@Service
+public class Table2Categoryservice {
+	  @Autowired 
+	  private newstable2repo categoryRepo;
+	    public List<Table3> getAllCategories() 
+	    { 
+	    	return categoryRepo.findAll(); 
+	    	}
+	    public Table3 addCategory(Table3 category) { 
+	    	return categoryRepo.save(category);
+	    	}
+	    public String deleteCategory(Long id) 
+	    { 
+	    	if(categoryRepo.existsById(id))
+	    	{
+	    	categoryRepo.deleteById(id); 
+	    	return "category deleted";
+	    	}
+	    	else
+	    	{
+	    		return "value not found"+id;
+	    	}
+	    }
+	    public Table3 updateCategory(Long id, Table3 updatedCategory) {
+	    	if(categoryRepo.existsById(id))
+	    	{
+	    		
+	    	
+	        Table3 categoryobj=categoryRepo.findById(id).get();
+	            categoryobj.setCategory(updatedCategory.getCategory());
+	            return categoryRepo.save(categoryobj);
+	        }
+	        return updatedCategory;
+	       
+	    }
+	    public Page<Table3> getCategoryPage(int page, int size) {
+	        PageRequest obj = PageRequest.of(page, size);
+	        return categoryRepo.findAll(obj);
+	    }
+
+	    public List<Table3> getCategoryByIdAndCategory( Long id,String category) {
+	        return categoryRepo.findByIdAndCategory(id,category);
+	    }
+	    public List<Table3> getCategoryByIdOrCategory( Long id,String category) {
+	        return categoryRepo.findByIdOrCategory(id,category);
+	    }
+
+	    public List<Table3> fetchCategoriesByCategory(List<String> category) {
+	        return categoryRepo.findByCategoryIn(category);
+	    }
+
+	    public List<Table3> findCategoryByNameStartingWith(String category) {
+	        return categoryRepo.findByCategoryStartingWith(category);
+	    }
+
+	    public List<Table3> findCategoryByNameContains(String category) {
+	        return categoryRepo.findByCategoryContains(category);
+	    }
+	}
+
+
