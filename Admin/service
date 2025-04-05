@@ -1,0 +1,70 @@
+package com.example.News.Portal.Service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
+import com.example.News.Portal.Entity.Table6;
+import com.example.News.Portal.Repo.newstable4repo;
+import com.example.News.Portal.Repo.newstable6repo;
+@Service
+public class Table6adminservice {
+	@Autowired
+	private newstable6repo adminRepo;
+    public List<Table6> getAlladmin()
+    { 
+    	return adminRepo.findAll(); 
+    	}
+    public Table6 addadmin(Table6 admin)
+    { 
+    	return adminRepo.save(admin); 
+    	}
+    public String deleteadmin(Long id) { 
+    	if( adminRepo.existsById(id))
+    	{
+    		adminRepo.deleteById(id);
+    	return "admin deleted";
+    	}
+    	else
+    		
+    	{
+    		return "value not value";
+    	}
+    }
+    public Table6 updateadmin(Long id, Table6 updatedadmin) {
+    	if(adminRepo.existsById(id))
+    	{
+    		 Table6 adminobj=  adminRepo.findById(id).get();
+    		 adminobj.setAdminId(updatedadmin.getAdminId());
+            adminobj.setAdminName(updatedadmin.getAdminName());
+            return adminRepo.save(adminobj);
+    	}
+    	return  updatedadmin;
+    }
+    public Page<Table6> getAdminPage(int page, int size) {
+        PageRequest obj = PageRequest.of(page, size);
+        return adminRepo.findAll(obj);
+    }
+
+    public List<Table6> getAdminByadminNameAndadminId(String adminName, int adminId) {
+        return adminRepo.findByAdminNameAndAdminId(adminName, adminId);
+    }
+    public List<Table6> getAdminByadminNameOradminId(String adminName, int adminId) {
+        return adminRepo.findByAdminNameOrAdminId(adminName, adminId);
+    }
+    public List<Table6> fetchAdminByNames(List<String> adminName) {
+        return adminRepo.findByAdminNameIn(adminName);
+    }
+
+    public List<Table6> findAdminByNameStartingWith(String adminName) {
+        return adminRepo.findByAdminNameStartingWith(adminName);
+    }
+
+    public List<Table6> findAdminByNameContains(String adminName) {
+        return adminRepo.findByAdminNameContains(adminName);
+    }
+
+}
