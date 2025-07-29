@@ -1,3 +1,8 @@
+https://meet.google.com/vyi-mzpf-dyp
+
+
+
+
 package com.example.News.Portal.Entity;
 
 import jakarta.persistence.Entity;
@@ -13,14 +18,10 @@ import lombok.Setter;
 
 @Entity
 @Data
-
-@Table(name = "news")
-public class Table2 {
+@Table(name = "categories")
+public class Table3 {
 	 @Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	    private Long id;
-	    private String title;
-	    private String content;
 	    private String category;
-	    private String author;
 }
