@@ -1,23 +1,19 @@
-package com.example.News.Portal.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.util.List;
 
-@Entity
-@Data
-@Table(name = "comments")
-public class Table4 {
-	 @Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private Long id;
-	    private String comment;
-	    private String users;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.stereotype.Repository;
+
+import com.example.News.Portal.Entity.Table2;
+
+@Repository
+public interface newstable5repo extends JpaRepository<Table2, Long>, PagingAndSortingRepository<Table2, Long> {
+	 List<Table2> findAll();
+    List<Table2> findByTitleAndId(String Title, Long id);
+    List<Table2> findByTitleOrId(String Title, Long id);
+    List<Table2> findByTitleIn(List<String> title);
+    List<Table2> findByTitleStartingWith(String title);
+    List<Table2> findByTitleContains(String title);
 }
+
